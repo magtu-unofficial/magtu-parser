@@ -1,0 +1,19 @@
+{
+  "timetable": {
+    "urls": [
+      "http://newlms.magtu.ru/mod/folder/view.php?id=219203",
+      "http://newlms.magtu.ru/mod/folder/view.php?id=219217",
+      "http://newlms.magtu.ru/mod/folder/view.php?id=219218",
+      "http://newlms.magtu.ru/mod/folder/view.php?id=219219",
+      "http://newlms.magtu.ru/mod/folder/view.php?id=219220"
+    ],
+    "ignore": ["ИСп-18-2.xlsx", "Пр-15-1.xlsx"],
+    "filenames": {
+      "ИСп-18-2": "ИСп-18-2 с 11.02.19.xlsx",
+      "Пр-15-1.xlsx": "Пр-15-1 с 11.02.19.xlsx"
+    }
+  },
+  "changes": {
+    "url": "http://newlms.magtu.ru/mod/folder/view.php?id=253565"
+  }
+}
