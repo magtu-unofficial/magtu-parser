@@ -60,29 +60,42 @@ const readGroup = (sheet, x, y) => {
 
 const readBlock = (sheet, x, y) => {
   if (exist(sheet, x, y)) {
-    const block = {};
-    block.number = sheet[cp(x, y)].v;
+    const block = [];
+
     if (
       // Пара у первой и второй подгруппы
       exist(sheet, x + 1, y) &&
       !exist(sheet, x + 2, y + 1) &&
       exist(sheet, x + 4, y + 1)
     ) {
-      block.common = readGroup(sheet, x + 1, y);
+      block.push({
+        number: sheet[cp(x, y)].v,
+        subgroup: "common",
+        ...readGroup(sheet, x + 1, y)
+      });
     } else {
       if (
         // Пара у первой подгруппы
         exist(sheet, x + 1, y) &&
         exist(sheet, x + 2, y + 1)
       ) {
-        block.first = readSubgroup(sheet, x + 1, y);
+        block.push({
+          number: sheet[cp(x, y)].v,
+          subgroup: "first",
+          ...readSubgroup(sheet, x + 1, y)
+        });
       }
 
       if (
         // Пара у вторйо подгруппы
         exist(sheet, x + 3, y)
       ) {
-        block.second = readSubgroup(sheet, x + 3, y);
+        block.push();
+        block.push({
+          number: sheet[cp(x, y)].v,
+          subgroup: "second",
+          ...readSubgroup(sheet, x + 3, y)
+        });
       }
     }
     return block;
@@ -91,11 +104,12 @@ const readBlock = (sheet, x, y) => {
 };
 
 const readDay = (sheet, x, from, to) => {
-  const day = {};
+  const day = [];
   for (let i = from; i < to; i += 2) {
     const block = readBlock(sheet, x, i);
     if (block) {
-      day[block.number] = block;
+      day.push(...block);
+      // day[block.number] = block;
     }
   }
   return day;
