@@ -14,7 +14,10 @@ const exist = (sheet, x, y) => {
 
 const groupName = sheet => {
   try {
-    return sheet[cp(1, 5)].v.replace("Расписание группы ", "").split("/")[0];
+    return sheet[cp(1, 5)].v
+      .replace("Расписание группы ", "")
+      .split("/")[0]
+      .toLowerCase();
   } catch (error) {
     throw Error("Not found group name in file");
   }
@@ -103,7 +106,7 @@ export default (file, book) => {
 
   const name = groupName(sheet);
 
-  if (name !== file.replace(".xlsx", "")) {
+  if (name !== file.replace(".xlsx", "").toLowerCase()) {
     throw Error(`Group name in file (${name}) not equil with filename`);
   }
 
