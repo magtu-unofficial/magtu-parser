@@ -106,7 +106,13 @@ export default (file, book) => {
 
   const name = groupName(sheet);
 
-  if (name !== file.replace(".xlsx", "").toLowerCase()) {
+  if (
+    name !==
+    file
+      .replace(".xlsx", "")
+      .split(" ")[0]
+      .toLowerCase()
+  ) {
     throw Error(`Group name in file (${name}) not equil with filename`);
   }
 
