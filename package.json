@@ -29,6 +29,7 @@
     "dotenv": "^6.2.0",
     "excel-column-name": "^1.0.0",
     "jsdom": "^13.2.0",
+    "mongoose": "^5.4.9",
     "node-fetch": "^2.3.0",
     "xlsx": "^0.14.1"
   }
