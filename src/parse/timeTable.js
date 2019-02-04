@@ -14,7 +14,7 @@ const exist = (sheet, x, y) => {
 
 const groupName = sheet => {
   try {
-    return sheet[cp(1, 5)].v.replace("Расписание группы ", "");
+    return sheet[cp(1, 5)].v.replace("Расписание группы ", "").split("/")[0];
   } catch (error) {
     throw Error("Not found group name in file");
   }
