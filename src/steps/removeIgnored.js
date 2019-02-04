@@ -15,7 +15,6 @@ export default (fileList, ignore) => {
     ) {
       cleanFileList.push(file);
     } else {
-      console.log(file.file);
       ignored += 1;
     }
   }
