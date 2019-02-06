@@ -13,7 +13,11 @@ export default async url => {
         });
 
       if (numbers.length === 3 && numbers.findIndex(e => isNaN(e)) === -1) {
-        const date = new Date(numbers[2] + 2000, numbers[1] - 1, numbers[0]);
+        const date = new Date(
+          numbers[2] + 2000,
+          numbers[1] - 1,
+          numbers[0] + 1
+        );
 
         if (!result.date || result.date < date) {
           result.date = date;
