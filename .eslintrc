@@ -5,6 +5,7 @@
     "prettier/prettier": ["error"],
     "no-console": "off",
     "no-restricted-syntax": "off",
-    "no-await-in-loop": "off"
+    "no-await-in-loop": "off",
+    "no-restricted-globals": "off"
   }
 }
