@@ -7,7 +7,7 @@ export default (fileList, ignore) => {
   }
 
   const cleanFileList = [];
-  let ignored = 0;
+  let applied = 0;
   for (const file of fileList) {
     if (
       ignore.indexOf(file.file) === -1 &&
@@ -15,14 +15,19 @@ export default (fileList, ignore) => {
     ) {
       cleanFileList.push(file);
     } else {
-      ignored += 1;
+      applied += 1;
     }
   }
   console.log(
-    `Ignored ${ignored} of ${ignore.length} from file and ${
+    `Ignored ${applied} of ${ignore.length} from file and ${
       duplicates.length
     }. Left ${cleanFileList.length}`
   );
 
-  return cleanFileList;
+  return {
+    cleanFileList,
+    applied,
+    ignored: ignore.length,
+    duplicated: duplicates.length
+  };
 };

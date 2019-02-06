@@ -90,7 +90,6 @@ const readBlock = (sheet, x, y) => {
         // Пара у вторйо подгруппы
         exist(sheet, x + 3, y)
       ) {
-        block.push();
         block.push({
           number: sheet[cp(x, y)].v,
           subgroup: "second",
