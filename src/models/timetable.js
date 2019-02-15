@@ -16,7 +16,8 @@ const timetable = mongoose.Schema({
         required: true
       },
       changed: { type: Boolean, default: false },
-      removed: { type: Boolean, default: false }
+      removed: { type: Boolean, default: false },
+      error: { type: Boolean, default: false }
     }
   ]
 });
@@ -37,22 +38,33 @@ const check = pair => {
   };
 };
 
-const applyChange = async (group, date, period, change, tt) => {
+const applyChange = async (group, date, period, changes, tt) => {
   try {
     const day = await tt.findOne({
       group,
       date: addDays(date, parseInt(period, 10))
     });
 
-    for (const pairKey in day.pairs) {
-      if ({}.hasOwnProperty.call(day.pairs, pairKey)) {
-        const pair = day.pairs[pairKey];
-        const ch = change.find(check(pair));
-        if (ch) {
-          day.pairs[pairKey] = ch;
-          day.pairs[pairKey].changed = true;
+    for (const changeKey in changes) {
+      if ({}.hasOwnProperty.call(changes, changeKey)) {
+        const change = changes[changeKey];
+        const pairIndex = day.pairs.findIndex(e => {
+          return (
+            e.number === change.number &&
+            (e.subgroup === change.subgroup || change.subgroup === "common")
+          );
+        });
+        if (pairIndex !== -1) {
+          console.log(day.pairs[pairIndex]);
+          day.pairs.splice(pairIndex, 1, { changed: true, ...change });
+        } else {
+          day.pairs.push({ changed: true, ...change });
         }
       }
+    }
+    if (group === "испк-18-1") {
+      console.log({ group, date, period, changes });
+      console.log(day);
     }
     await day.save();
   } catch (error) {

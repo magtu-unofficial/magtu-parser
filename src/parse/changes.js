@@ -8,14 +8,17 @@ const parseString = string => {
         removed: true
       };
     }
-    return {
-      name: split[0],
-      teacher: split[1].split("\r\n")[1],
-      classroom: split[1].split("\r\n")[0]
-    };
+    if (split[0] && split[1].split("\n")[1] && split[1].split("\n")[0]) {
+      return {
+        name: split[0],
+        teacher: split[1].split("\n")[1],
+        classroom: split[1].split("\n")[0]
+      };
+    }
+    throw Error();
   } catch (e) {
     console.log("Error in changes for", string);
-    return {};
+    return { error: true };
   }
 };
 
