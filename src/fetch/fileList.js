@@ -6,7 +6,7 @@ export default async url => {
   const dom = new JSDOM(await res.text());
   const elements = dom.window.document.querySelectorAll(".fp-filename-icon a");
 
-  // какая то магия
+  // какая-то магия
   const array = Array.prototype.slice.call(elements);
 
   return array.map(value => ({
