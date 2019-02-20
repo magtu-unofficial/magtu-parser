@@ -4,9 +4,10 @@ export default async url => {
   const files = await fileList(url);
   const result = {};
   for (const file of files) {
-    if (file.file.indexOf("-") !== -1 && file.file.indexOf(".") !== -1) {
+    if (file.file.indexOf(".") !== -1) {
       const numbers = file.file
         .split("-")[0]
+        .replace(".xlsx", "")
         .split(".")
         .map(e => {
           return parseInt(e, 10);

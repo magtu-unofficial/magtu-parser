@@ -8,7 +8,6 @@ import Timetable from "./models/timetable";
 import mongoose from "./lib/mongoose";
 
 console.log("Starting parser");
-console.log(getChangesFile);
 
 (async () => {
   const startTime = new Date();
