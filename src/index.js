@@ -8,6 +8,7 @@ import Timetable from "./models/timetable";
 import mongoose from "./lib/mongoose";
 
 console.log("Starting parser");
+console.log(getChangesFile);
 
 (async () => {
   const startTime = new Date();
@@ -32,7 +33,6 @@ console.log("Starting parser");
 
     console.log("New changes", date);
 
-    // console.log("Proc");
     const result = await timetable(date);
     launch.files = result;
 

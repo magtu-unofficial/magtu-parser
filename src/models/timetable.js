@@ -24,20 +24,6 @@ const timetable = mongoose.Schema({
 
 timetable.index({ date: 1, group: -1 }, { unique: true });
 
-const check = pair => {
-  return e => {
-    if (e.number === pair.number) {
-      if (e.subgroup === pair.subgroup) {
-        return true;
-      }
-      if (e.subgroup === "common") {
-        return true;
-      }
-    }
-    return false;
-  };
-};
-
 const applyChange = async (group, date, period, changes, tt) => {
   try {
     const day = await tt.findOne({
@@ -62,10 +48,7 @@ const applyChange = async (group, date, period, changes, tt) => {
         }
       }
     }
-    if (group === "испк-18-1") {
-      console.log({ group, date, period, changes });
-      console.log(day);
-    }
+
     await day.save();
   } catch (error) {
     console.log(`${error.message} whren applying changes for ${group}`);
