@@ -1,25 +1,20 @@
 import fileList from "../fetch/fileList";
+import download from "../fetch/download";
+import findDate from "./findDate";
 
 export default async url => {
   const files = await fileList(url);
-  const result = {};
+  let result = {};
   for (const file of files) {
-    if (file.file.indexOf(".") !== -1) {
-      const numbers = file.file
-        .split("-")[0]
-        .replace(".xlsx", "")
-        .split(".")
-        .map(e => {
-          return parseInt(e, 10);
-        });
-
-      if (numbers.length === 3 && numbers.findIndex(e => isNaN(e)) === -1) {
-        const date = new Date(numbers[2] + 2000, numbers[1] - 1, numbers[0]);
-
-        if (!result.date || result.date < date) {
-          result.date = date;
-          result.file = file;
+    if (file.file.indexOf(".xlsx") !== -1 || file.file.indexOf(".xls") !== -1) {
+      const book = await download(file.url);
+      try {
+        const date = findDate(book);
+        if (date > result.date || result.date === undefined) {
+          result = { book, date };
         }
+      } catch (error) {
+        console.log(error.message, "in", file.file);
       }
     }
   }

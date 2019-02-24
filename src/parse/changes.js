@@ -18,51 +18,55 @@ const parseString = string => {
     throw Error();
   } catch (e) {
     console.log("Error in changes for", string);
-    return { error: true };
+    return { error: true, string };
   }
 };
 
 const splitString = (string, number) => {
-  if (string.indexOf("1. ") === -1 && string.indexOf("2. ") === -1) {
-    return [
-      {
-        number,
-        subgroup: "common",
-        ...parseString(string)
-      }
-    ];
-  }
-  if (string.split("\r\n2. ").length > 1) {
-    return [
-      {
-        number,
-        subgroup: "first",
-        ...parseString(string.replace("1. ", "").split("\r\n2. ")[0])
-      },
-      {
-        number,
-        subgroup: "second",
-        ...parseString(string.replace("1. ", "").split("\r\n2. ")[1])
-      }
-    ];
-  }
-  if (string.indexOf("1. ") !== -1) {
-    return [
-      {
-        number,
-        subgroup: "first",
-        ...parseString(string.replace("1. ", ""))
-      }
-    ];
-  }
-  if (string.indexOf("2. ") !== -1) {
-    return [
-      {
-        number,
-        subgroup: "second",
-        ...parseString(string.replace("2. ", ""))
-      }
-    ];
+  try {
+    if (string.indexOf("1. ") === -1 && string.indexOf("2. ") === -1) {
+      return [
+        {
+          number,
+          subgroup: "common",
+          ...parseString(string)
+        }
+      ];
+    }
+    if (string.split("\r\n2. ").length > 1) {
+      return [
+        {
+          number,
+          subgroup: "first",
+          ...parseString(string.replace("1. ", "").split("\r\n2. ")[0])
+        },
+        {
+          number,
+          subgroup: "second",
+          ...parseString(string.replace("1. ", "").split("\r\n2. ")[1])
+        }
+      ];
+    }
+    if (string.indexOf("1. ") !== -1) {
+      return [
+        {
+          number,
+          subgroup: "first",
+          ...parseString(string.replace("1. ", ""))
+        }
+      ];
+    }
+    if (string.indexOf("2. ") !== -1) {
+      return [
+        {
+          number,
+          subgroup: "second",
+          ...parseString(string.replace("2. ", ""))
+        }
+      ];
+    }
+  } catch (error) {
+    console.log(string, error.message);
   }
   return [];
 };
@@ -101,7 +105,7 @@ const findCols = (sheet, pairsCount, y = 2) => {
   return cols;
 };
 
-const findPairsCount = (sheet, x = 3, y = 3) => {
+const findPairsCount = (sheet, x = 3, y) => {
   const pairs = [];
   for (let three = 0; three < 3; three += 1) {
     for (let row = y; row < y + 12; row += 1) {
@@ -116,15 +120,27 @@ const findPairsCount = (sheet, x = 3, y = 3) => {
   return pairs;
 };
 
+const findY = sheet => {
+  for (let y = 1; y < 10; y += 1) {
+    if (sheet[cp(2, y)]) {
+      if (sheet[cp(2, y)]) {
+        return y - 1;
+      }
+    }
+  }
+  throw Error("Y line not found un changes");
+};
+
 export default book => {
   const sheet = book.Sheets[book.SheetNames[0]];
-
-  return findCols(sheet, findPairsCount(sheet));
+  const Y = findY(sheet);
+  return findCols(sheet, findPairsCount(sheet, 3, Y + 1), Y);
 };
 
 /*
-{
-  "испк-18-1": {
+[
+  group: "испк-18-1"
+  three: {
     "0": [{
       number: 1,
       name: "Физкультура",

@@ -1,6 +1,6 @@
 import timetable from "./timetable";
 import getChangesFile from "./changes/getChangesFile";
-import downloadAndParseChanges from "./changes/downloadAndParse";
+import parseChanges from "./parse/changes";
 import { changes } from "../urls.json";
 import Launch from "./models/launch";
 import Timetable from "./models/timetable";
@@ -26,7 +26,7 @@ console.log("Starting parser");
   );
 
   if (changesComp[0] < changesComp[1].date) {
-    const { date, file } = changesComp[1];
+    const { date, book } = changesComp[1];
     launch.lastChanges = date;
     launch.newChanges = true;
 
@@ -35,7 +35,7 @@ console.log("Starting parser");
     const result = await timetable(date);
     launch.files = result;
 
-    const ch = await downloadAndParseChanges(file);
+    const ch = parseChanges(book);
     await Timetable.applyChanges(ch, date);
   } else {
     const date = changesComp[0];
