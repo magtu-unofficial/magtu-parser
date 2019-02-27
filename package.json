@@ -5,7 +5,7 @@
   "main": "dist",
   "scripts": {
     "start": "node dist",
-    "dev": "nodemon --ignore dist --exec babel-node src/",
+    "dev": "nodemon --ignore dist --exec \"npm run test && babel-node src/\"",
     "test": "eslint src && jest",
     "build": "npm run test && babel src --out-dir dist"
   },

@@ -4,8 +4,6 @@ import period from "../lib/period";
 import addDays from "../lib/addDays";
 import Timetable from "../models/timetable";
 
-// const baseDate = new Date("2019-02-04T00:00:00.000Z");
-
 const make = async (file, date) => {
   try {
     const book = await download(file.url);

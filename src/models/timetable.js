@@ -41,7 +41,6 @@ const applyChange = async (group, date, period, changes, tt) => {
           );
         });
         if (pairIndex !== -1) {
-          console.log(day.pairs[pairIndex]);
           day.pairs.splice(pairIndex, 1, { changed: true, ...change });
         } else {
           day.pairs.push({ changed: true, ...change });
