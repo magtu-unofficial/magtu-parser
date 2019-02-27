@@ -41,7 +41,7 @@ const applyChange = async (group, date, period, changes, tt) => {
           );
         });
         if (pairIndex !== -1) {
-          day.pairs.splice(pairIndex, 1, { changed: true, ...change });
+          day.setPair(pairIndex, change);
         } else {
           day.pairs.push({ changed: true, ...change });
         }
@@ -52,6 +52,11 @@ const applyChange = async (group, date, period, changes, tt) => {
   } catch (error) {
     console.log(`${error.message} whren applying changes for ${group}`);
   }
+};
+
+timetable.methods.setPair = function setPair(index, change) {
+  this.pairs[index] = change;
+  this.pairs[index].changed = true;
 };
 
 timetable.statics.applyChanges = async function applyChages(changes, date) {
