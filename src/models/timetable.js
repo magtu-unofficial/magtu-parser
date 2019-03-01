@@ -15,6 +15,7 @@ const timetable = mongoose.Schema({
         enum: ["common", "first", "second"],
         required: true
       },
+      string: { type: String },
       changed: { type: Boolean, default: false },
       removed: { type: Boolean, default: false },
       error: { type: Boolean, default: false }
@@ -55,7 +56,8 @@ const applyChange = async (group, date, period, changes, tt) => {
 };
 
 timetable.methods.setPair = function setPair(index, change) {
-  this.pairs[index] = change;
+  // быдлокод
+  Object.assign(this.pairs[index], change);
   this.pairs[index].changed = true;
 };
 
