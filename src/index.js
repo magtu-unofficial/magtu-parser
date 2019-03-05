@@ -1,10 +1,12 @@
+import fetch from "node-fetch";
+
+import { bot } from "./lib/config";
 import timetable from "./timetable";
 import getChangesFile from "./changes/getChangesFile";
 import parseChanges from "./parse/changes";
 import { changes } from "../urls.json";
 import Launch from "./models/launch";
 import Timetable from "./models/timetable";
-
 import mongoose from "./lib/mongoose";
 
 console.log("Starting parser");
@@ -37,6 +39,7 @@ console.log("Starting parser");
 
     const ch = parseChanges(book);
     await Timetable.applyChanges(ch, date);
+    await fetch(`${bot}/notyfy`);
   } else {
     const date = changesComp[0];
     launch.lastChanges = date;
