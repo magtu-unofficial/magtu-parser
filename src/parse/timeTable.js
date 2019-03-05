@@ -59,47 +59,62 @@ const readGroup = (sheet, x, y) => {
 };
 
 const readBlock = (sheet, x, y) => {
-  if (exist(sheet, x, y)) {
-    const block = [];
+  try {
+    if (exist(sheet, x, y)) {
+      const block = [];
 
-    if (
-      // Пара у первой и второй подгруппы
-      exist(sheet, x + 1, y) &&
-      !exist(sheet, x + 2, y + 1) &&
-      exist(sheet, x + 4, y + 1)
-    ) {
-      block.push({
-        number: sheet[cp(x, y)].v,
-        subgroup: "common",
-        ...readGroup(sheet, x + 1, y)
-      });
-    } else {
       if (
-        // Пара у первой подгруппы
+        // Пара у первой и второй подгруппы
         exist(sheet, x + 1, y) &&
-        exist(sheet, x + 2, y + 1)
+        !exist(sheet, x + 2, y + 1) &&
+        exist(sheet, x + 4, y + 1)
       ) {
         block.push({
           number: sheet[cp(x, y)].v,
-          subgroup: "first",
-          ...readSubgroup(sheet, x + 1, y)
+          subgroup: "common",
+          ...readGroup(sheet, x + 1, y)
         });
+      } else {
+        if (
+          // Пара у первой подгруппы
+          exist(sheet, x + 1, y) &&
+          exist(sheet, x + 2, y + 1)
+        ) {
+          block.push({
+            number: sheet[cp(x, y)].v,
+            subgroup: "first",
+            ...readSubgroup(sheet, x + 1, y)
+          });
+        }
+
+        if (
+          // Пара у вторйо подгруппы
+          exist(sheet, x + 3, y)
+        ) {
+          block.push({
+            number: sheet[cp(x, y)].v,
+            subgroup: "second",
+            ...readSubgroup(sheet, x + 3, y)
+          });
+        }
+      }
+      for (let i = 0; i < 1; i += 1) {
+        if (
+          block[i] &&
+          block[i].teacher &&
+          block[i].teacher.indexOf(".") === -1
+        ) {
+          throw Error(block[i].teacher);
+        }
       }
 
-      if (
-        // Пара у вторйо подгруппы
-        exist(sheet, x + 3, y)
-      ) {
-        block.push({
-          number: sheet[cp(x, y)].v,
-          subgroup: "second",
-          ...readSubgroup(sheet, x + 3, y)
-        });
-      }
+      return block;
     }
-    return block;
+    return false;
+  } catch (error) {
+    console.log(`Проблемы с парой  ${x}, ${y}, ${error.message}`);
+    return [];
   }
-  return false;
 };
 
 const readDay = (sheet, x, from, to) => {
