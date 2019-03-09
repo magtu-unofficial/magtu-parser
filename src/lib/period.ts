@@ -14,6 +14,5 @@ const getWeek = d => {
   );
 };
 
-export default date => {
-  return 1 + (date.getDay() < 4 ? 0 : 1) + (getWeek(date) % 2 === 1 ? 0 : 2);
-};
+export default (date: Date): number =>
+  1 + (date.getDay() < 4 ? 0 : 1) + (getWeek(date) % 2 === 1 ? 0 : 2);

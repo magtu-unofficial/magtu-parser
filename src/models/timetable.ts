@@ -1,7 +1,8 @@
 import mongoose from "../lib/mongoose";
 import addDays from "../lib/addDays";
+import Ipair from "src/interfaces/pair";
 
-const timetable = mongoose.Schema({
+const timetable: mongoose.Schema = new mongoose.Schema({
   date: { type: Date, required: true },
   group: { type: String, required: true },
   pairs: [
@@ -31,7 +32,6 @@ const applyChange = async (group, date, period, changes, tt) => {
       group,
       date: addDays(date, parseInt(period, 10))
     });
-
     for (const changeKey in changes) {
       if ({}.hasOwnProperty.call(changes, changeKey)) {
         const change = changes[changeKey];
@@ -74,4 +74,19 @@ timetable.statics.applyChanges = async function applyChages(changes, date) {
   await Promise.all(tasks);
 };
 
-export default mongoose.model("Timetable", timetable);
+interface ItimetableDocument extends mongoose.Document {
+  date: Date;
+  group: string;
+  pairs: Array<Ipair>;
+  setPair: (index, change) => any;
+}
+
+interface ItimetableModel extends mongoose.Model<ItimetableDocument> {
+  applyChanges: (changes, date) => any;
+}
+
+const model: ItimetableModel = mongoose.model<
+  ItimetableDocument,
+  ItimetableModel
+>("Timetable", timetable);
+export default model;

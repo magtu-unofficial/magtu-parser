@@ -39,7 +39,12 @@ console.log("Starting parser");
 
     const ch = parseChanges(book);
     await Timetable.applyChanges(ch, date);
-    await fetch(`${bot}/notyfy`);
+
+    try {
+      await fetch(`${bot}/notyfy`);
+    } catch (error) {
+      console.log(`Не получилось оповестить бота: ${error.message}`);
+    }
   } else {
     const date = changesComp[0];
     launch.lastChanges = date;
@@ -48,7 +53,7 @@ console.log("Starting parser");
     console.log("No new changes");
   }
 
-  const endTime = new Date() - startTime;
+  const endTime = new Date().getTime() - startTime.getTime();
   launch.time = endTime;
   console.log(`Done in ${endTime}ms`);
   await launch.save();

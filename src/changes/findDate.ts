@@ -1,6 +1,7 @@
 import cp from "../lib/cellPos";
+import { WorkBook } from "xlsx";
 
-export default book => {
+export default (book: WorkBook): Date => {
   const sheet = book.Sheets[book.SheetNames[0]];
 
   for (let i = 0; i < 5; i += 1) {
