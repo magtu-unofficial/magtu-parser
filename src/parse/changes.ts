@@ -1,9 +1,12 @@
 import cp from "../lib/cellPos";
+import { WorkBook } from "xlsx/types";
+import Ipair from "../interfaces/pair";
+import Esubgroup from "../interfaces/subgroup";
 
-const parseString = string => {
-  const split = string.split("  ");
+const parseString = (str: string): Ipair => {
+  const split = str.split("  ");
   try {
-    if (string.indexOf("-----") !== -1) {
+    if (str.indexOf("-----") !== -1) {
       return {
         removed: true
       };
@@ -17,56 +20,56 @@ const parseString = string => {
     }
     throw Error();
   } catch (e) {
-    console.log("Error in changes for", string);
-    return { error: true, string };
+    console.log("Error in changes for", str);
+    return { error: true, string: str };
   }
 };
 
-const splitString = (string, number) => {
+const splitString = (str: string, num: number): Array<Ipair> => {
   try {
-    if (string.indexOf("1. ") === -1 && string.indexOf("2. ") === -1) {
+    if (str.indexOf("1. ") === -1 && str.indexOf("2. ") === -1) {
       return [
         {
-          number,
-          subgroup: "common",
-          ...parseString(string)
+          number: num,
+          subgroup: Esubgroup.first,
+          ...parseString(str)
         }
       ];
     }
-    if (string.split("\r\n2. ").length > 1) {
+    if (str.split("\r\n2. ").length > 1) {
       return [
         {
-          number,
-          subgroup: "first",
-          ...parseString(string.replace("1. ", "").split("\r\n2. ")[0])
+          number: num,
+          subgroup: Esubgroup.first,
+          ...parseString(str.replace("1. ", "").split("\r\n2. ")[0])
         },
         {
-          number,
-          subgroup: "second",
-          ...parseString(string.replace("1. ", "").split("\r\n2. ")[1])
+          number: num,
+          subgroup: Esubgroup.second,
+          ...parseString(str.replace("1. ", "").split("\r\n2. ")[1])
         }
       ];
     }
-    if (string.indexOf("1. ") !== -1) {
+    if (str.indexOf("1. ") !== -1) {
       return [
         {
-          number,
-          subgroup: "first",
-          ...parseString(string.replace("1. ", ""))
+          number: num,
+          subgroup: Esubgroup.first,
+          ...parseString(str.replace("1. ", ""))
         }
       ];
     }
-    if (string.indexOf("2. ") !== -1) {
+    if (str.indexOf("2. ") !== -1) {
       return [
         {
-          number,
-          subgroup: "second",
-          ...parseString(string.replace("2. ", ""))
+          number: num,
+          subgroup: Esubgroup.second,
+          ...parseString(str.replace("2. ", ""))
         }
       ];
     }
   } catch (error) {
-    console.log(string, error.message);
+    console.log(str, error.message);
   }
   return [];
 };
@@ -131,25 +134,8 @@ const findY = sheet => {
   throw Error("Y line not found un changes");
 };
 
-export default book => {
+export default (book: WorkBook) => {
   const sheet = book.Sheets[book.SheetNames[0]];
   const Y = findY(sheet);
   return findCols(sheet, findPairsCount(sheet, 3, Y + 1), Y);
 };
-
-/*
-[
-  group: "испк-18-1"
-  three: {
-    "0": [{
-      number: 1,
-      name: "Физкультура",
-      teacher: "Петровска С. С.",
-      classroom: "Н404",
-      subgroup: "common",
-    }],
-    1: []
-    2: []
-  }
-}
-*/

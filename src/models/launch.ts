@@ -1,6 +1,6 @@
 import mongoose from "../lib/mongoose";
 
-const launch = mongoose.Schema({
+const launch = new mongoose.Schema({
   date: { type: Date, required: true, unique: true },
   time: { type: Number, required: true },
   lastChanges: { type: Date, required: true },
@@ -13,11 +13,34 @@ const launch = mongoose.Schema({
   }
 });
 
-launch.statics.findlastChanges = async function findlastChanges() {
+launch.statics.findlastChanges = async function findlastChanges(): Promise<
+  Date
+> {
   const inst = await this.findOne()
     .sort({ date: -1 })
     .limit(1);
   return inst !== null ? inst.lastChanges : new Date(0);
 };
 
-export default mongoose.model("Launch", launch);
+interface IlaunchDocument extends mongoose.Document {
+  date: Date;
+  time: number;
+  lastChanges: Date;
+  newChanges: boolean;
+  files: {
+    total: number;
+    ignored: number;
+    duplicated: number;
+    applied: number;
+  };
+}
+
+interface IlaunchModel extends mongoose.Model<IlaunchDocument> {
+  findlastChanges: () => Date;
+}
+
+const model: IlaunchModel = mongoose.model<IlaunchDocument, IlaunchModel>(
+  "Launch",
+  launch
+);
+export default model;

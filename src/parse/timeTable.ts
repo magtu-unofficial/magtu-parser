@@ -1,4 +1,6 @@
 import cp from "../lib/cellPos";
+import { WorkBook } from "xlsx/types";
+import Ipair from "src/interfaces/pair";
 
 const testing = [
   {
@@ -129,7 +131,14 @@ const readDay = (sheet, x, from, to) => {
   return day;
 };
 
-export default (file, book) => {
+interface Itimetable {
+  [index: number]: Array<Ipair>;
+}
+
+export default (
+  file: string,
+  book: WorkBook
+): { name: string; timetable: Itimetable } => {
   const sheet = book.Sheets[book.SheetNames[0]];
 
   const name = groupName(sheet);
@@ -171,18 +180,3 @@ export default (file, book) => {
 
   return { name, timetable };
 };
-
-/*
-{
-  even: {
-    0: {
-      1: {
-        teacher: "Петрова",
-        classroom: "А404",
-        lesson: "Химия"
-      }
-    }
-  },
-  odd: {}
-}
-*/

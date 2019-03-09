@@ -3,8 +3,9 @@ import parseTimetable from "../parse/timeTable";
 import period from "../lib/period";
 import addDays from "../lib/addDays";
 import Timetable from "../models/timetable";
+import Ifile from "src/interfaces/file";
 
-const make = async (file, date) => {
+const make = async (file: Ifile, date: Date) => {
   try {
     const book = await download(file.url);
     const result = parseTimetable(file.file, book);
