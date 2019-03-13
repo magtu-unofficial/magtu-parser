@@ -3,7 +3,7 @@ import parseTimetable from "../parse/timeTable";
 import period from "../lib/period";
 import addDays from "../lib/addDays";
 import Timetable from "../models/timetable";
-import Ifile from "src/interfaces/file";
+import Ifile from "../interfaces/file";
 
 const make = async (file: Ifile, date: Date) => {
   try {

@@ -1,6 +1,6 @@
 import cp from "../lib/cellPos";
 import { WorkBook } from "xlsx/types";
-import Ipair from "src/interfaces/pair";
+import Ipair from "../interfaces/pair";
 
 const testing = [
   {

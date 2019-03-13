@@ -1,6 +1,6 @@
 import mongoose from "../lib/mongoose";
 import addDays from "../lib/addDays";
-import Ipair from "src/interfaces/pair";
+import Ipair from "../interfaces/pair";
 
 const timetable: mongoose.Schema = new mongoose.Schema({
   date: { type: Date, required: true },

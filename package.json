@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist",
   "scripts": {
-    "start": "node dist",
+    "start": "node dist/src",
     "dev": "nodemon --watch 'src/**/*.ts' --ignore dist --exec \"ts-node src\"",
     "test": "tslint -c tslint.json \"src/**/*.ts\" && jest",
     "build": "npm test && tsc"
