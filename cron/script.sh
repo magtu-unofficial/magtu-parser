@@ -1,4 +1,4 @@
 #!/bin/sh
 
 cd /app
-node dist
+npm start
