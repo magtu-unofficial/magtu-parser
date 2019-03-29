@@ -31,7 +31,7 @@ const splitString = (str: string, num: number): Array<Ipair> => {
       return [
         {
           number: num,
-          subgroup: Esubgroup.first,
+          subgroup: Esubgroup.common,
           ...parseString(str)
         }
       ];
