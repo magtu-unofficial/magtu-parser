@@ -74,20 +74,41 @@ const splitString = (str: string, num: number): Array<Ipair> => {
   return [];
 };
 
-const processCol = (sheet, x, y, pairsCount) => {
+const processCol = (sheet, x, y, pairsCount: Array<number>) => {
   const three = {};
+
+  // t - Номер дня из трех дней в замене.
+  // 0 - Пн/Чт
+  // 1 - Вт/Пт
+  // 2 - Ср/Сб
   for (let t = 0; t < 3; t += 1) {
     three[t] = [];
+
+    if (t > pairsCount.length) {
+      throw Error(
+        `Неизвестна колличество замен для ${t} дня. Массив: ${pairsCount}`
+      );
+    }
+
+    // Складывает колличества пар в заменах для опредения нужной строки
+    // FIX: При array[index - 1] не применяеться последнее значение при t=2
+    // возможно можно использовать array.splice().reduce() , но тогда при t=0 будет пустой массив
+    // АААА. Надо сделать цикл!
+    let pairNumber = 0;
+    for (let i = 0; i < t; i++) {
+      const e = pairsCount[i];
+      pairNumber += e;
+    }
+
     for (let p = 1; p <= pairsCount[t]; p += 1) {
-      if (sheet[cp(x, y + p + (pairsCount[t] + 1) * t)]) {
-        const pairs = splitString(
-          sheet[cp(x, y + p + (pairsCount[t] + 1) * t)].v,
-          p
-        );
+      const col = y + p + pairNumber + t;
+      if (sheet[cp(x, col)]) {
+        const pairs = splitString(sheet[cp(x, col)].v, p);
         three[t].push(...pairs);
       }
     }
   }
+
   return { group: sheet[cp(x, y)].v.toLowerCase().split("/")[0], three };
 };
 
@@ -110,11 +131,13 @@ const findCols = (sheet, pairsCount, y = 2) => {
 
 const findPairsCount = (sheet, x = 3, y) => {
   const pairs = [];
+  let row = y;
   for (let three = 0; three < 3; three += 1) {
-    for (let row = y; row < y + 12; row += 1) {
+    for (row; row < y + 50; row += 1) {
       if (sheet[cp(x, row)]) {
         pairs[three] = sheet[cp(x, row)].v;
       } else {
+        row += 1;
         break;
       }
     }
