@@ -6,19 +6,23 @@ import Esubgroup from "../interfaces/subgroup";
 const parseString = (str: string): Ipair => {
   const split = str.split("  ");
   try {
-    if (str.indexOf("-----") !== -1) {
+    if (str.search(/-{2,}/) !== -1) {
       return {
         removed: true
       };
     }
-    if (split[0] && split[1].split("\n")[1] && split[1].split("\n")[0]) {
-      return {
-        name: split[0],
-        teacher: split[1].split("\n")[1],
-        classroom: split[1].split("\n")[0]
-      };
-    }
-    throw Error();
+    const name = str.split(/\s\s|\n/)[0];
+    const teacher = str.match(/[А-Я][а-я]{2,} [А-Я][а-я]?.[А-Я]./)[0];
+    const classroom = str.match(/[АУМБО]-?\d{2,3}/);
+    return { name, teacher, classroom: classroom ? classroom[0] : undefined };
+    // if (split[0] && split[1].split("\n")[1] && split[1].split("\n")[0]) {
+    //   return {
+    //     name: split[0],
+    //     teacher: split[1].split("\n")[1],
+    //     classroom: split[1].split("\n")[0]
+    //   };
+    // }
+    // throw Error();
   } catch (e) {
     console.log("Error in changes for", str);
     return { error: true, string: str };
@@ -27,7 +31,8 @@ const parseString = (str: string): Ipair => {
 
 const splitString = (str: string, num: number): Array<Ipair> => {
   try {
-    if (str.indexOf("1. ") === -1 && str.indexOf("2. ") === -1) {
+    // Общая пара
+    if (str.search(/1. /) === -1 && str.search(/2. /) === -1) {
       return [
         {
           number: num,
@@ -36,21 +41,23 @@ const splitString = (str: string, num: number): Array<Ipair> => {
         }
       ];
     }
-    if (str.split("\r\n2. ").length > 1) {
+    // Пара у двух подгрупп
+    if (str.search(/1. /) !== -1 && str.search(/2. /) !== -1) {
       return [
         {
           number: num,
           subgroup: Esubgroup.first,
-          ...parseString(str.replace("1. ", "").split("\r\n2. ")[0])
+          ...parseString(str.replace("1. ", "").split("\n2. ")[0])
         },
         {
           number: num,
           subgroup: Esubgroup.second,
-          ...parseString(str.replace("1. ", "").split("\r\n2. ")[1])
+          ...parseString(str.replace("1. ", "").split("\n2. ")[1])
         }
       ];
     }
-    if (str.indexOf("1. ") !== -1) {
+    // Пара у первой подгруппы
+    if (str.search(/1. /) !== -1) {
       return [
         {
           number: num,
@@ -59,7 +66,8 @@ const splitString = (str: string, num: number): Array<Ipair> => {
         }
       ];
     }
-    if (str.indexOf("2. ") !== -1) {
+    // Пара у второй подгруппы
+    if (str.search(/2. /) !== -1) {
       return [
         {
           number: num,
