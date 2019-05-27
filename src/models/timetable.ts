@@ -38,7 +38,9 @@ const applyChange = async (group, date, period, changes, tt) => {
         const pairIndex = day.pairs.findIndex(e => {
           return (
             e.number === change.number &&
-            (e.subgroup === change.subgroup || change.subgroup === "common")
+            (e.subgroup === change.subgroup ||
+              change.subgroup === "common" ||
+              e.subgroup === "common")
           );
         });
         if (pairIndex !== -1) {
