@@ -1,68 +1,45 @@
-import fetch from "node-fetch";
-
-import { bot } from "./lib/config";
-import timetable from "./timetable";
-import getChangesFile from "./changes/getChangesFile";
-import parseChanges from "./parse/changes";
-import { changes } from "../urls.json";
-import Launch from "./models/launch";
-import Timetable from "./models/timetable";
-import mongoose from "./lib/mongoose";
-
-console.log("Starting parser");
+import { urls } from "./utils/config";
+import mongoose from "./utils/mongoose";
+import Change from "./models/change";
+import { fileList } from "./utils/files";
+import log from "./utils/log";
+import Wait from "./utils/wait";
 
 (async () => {
-  try {
-    const startTime = new Date();
-    const launch = new Launch({ date: startTime });
+  log.info("Парсер запущен");
+  // Засекаем время работы
+  const startTime = new Date();
 
-    console.log("Checking changes");
-    const changesComp = await Promise.all([
-      Launch.findlastChanges(),
-      getChangesFile(changes.url)
-    ]);
+  // Получаем список файлов в директорие замен
+  const changesDir = await fileList(urls.changes.url);
+  // Загружаем .xls или .xlsx файлы
+  const changesLoader = new Wait();
+  changesDir.forEach(file => {
+    if (file.name.search(/.xls/) !== -1) {
+      changesLoader.add(file.load());
+    }
+  });
+  const changesList = await changesLoader.wait();
+  log.info(
+    `В директорие замен колличество файлов: ${changesDir.length}, из них .xls(x): ${changesList.length}`
+  );
 
-    console.log(
-      changesComp[0] < changesComp[1].date,
-      changesComp[0],
-      changesComp[1].date
-    );
+  // Обрабатываем каждый файл замен
+  for (const file of changesList) {
+    const fileTime = new Date();
+    log.info(`Обработка ${file.name}`);
 
-    if (changesComp[0] < changesComp[1].date) {
-      const { date, book } = changesComp[1];
-      launch.lastChanges = date;
-      launch.newChanges = true;
-
-      console.log("New changes", date);
-
-      const result = await timetable(date);
-      launch.files = result;
-
-      const ch = parseChanges(book);
-      await Timetable.applyChanges(ch, date);
-
-      try {
-        await fetch(`${bot}/notyfy`);
-      } catch (error) {
-        console.log(`Не получилось оповестить бота: ${error.message}`);
-      }
-    } else {
-      const date = changesComp[0];
-      launch.lastChanges = date;
-      launch.newChanges = false;
-
-      console.log("No new changes");
+    // Проверяем, был ли этот файл уже распарсен
+    if (await Change.hasFile(file.md5)) {
+      log.info("Файл уже был обработан");
+      continue;
     }
 
-    const endTime = new Date().getTime() - startTime.getTime();
-    launch.time = endTime;
-    console.log(`Done in ${endTime}ms`);
-    await launch.save();
-
-    console.log(`Disconecting from db`);
-    mongoose.connection.close();
-    console.log(`Disconected`);
-  } catch (error) {
-    console.log(`Необраьотаная ошибка: ${error.message}`);
+    await Change.addFile(file, new Date().getTime() - fileTime.getTime());
   }
+
+  await mongoose.connection.close();
+  log.info(
+    `Работа завершена за ${new Date().getTime() - startTime.getTime()}ms`
+  );
 })();
