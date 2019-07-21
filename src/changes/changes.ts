@@ -1,4 +1,4 @@
-import cp from "../lib/cellPos";
+import cp from "../utils/cellPos";
 import { WorkBook } from "xlsx/types";
 import Ipair from "../interfaces/pair";
 import Esubgroup from "../interfaces/subgroup";
@@ -137,36 +137,7 @@ const findCols = (sheet, pairsCount, y = 2) => {
   return cols;
 };
 
-const findPairsCount = (sheet, x = 3, y) => {
-  const pairs = [];
-  let row = y;
-  for (let three = 0; three < 3; three += 1) {
-    for (row; row < y + 50; row += 1) {
-      if (sheet[cp(x, row)]) {
-        pairs[three] = sheet[cp(x, row)].v;
-      } else {
-        row += 1;
-        break;
-      }
-    }
-  }
-
-  return pairs;
-};
-
-const findY = sheet => {
-  for (let y = 1; y < 10; y += 1) {
-    if (sheet[cp(2, y)]) {
-      if (sheet[cp(2, y)]) {
-        return y - 1;
-      }
-    }
-  }
-  throw Error("Y line not found un changes");
-};
-
 export default (book: WorkBook) => {
-  const sheet = book.Sheets[book.SheetNames[0]];
-  const Y = findY(sheet);
-  return findCols(sheet, findPairsCount(sheet, 3, Y + 1), Y);
+  // const sheet = book.Sheets[book.SheetNames[0]];
+  // return findCols(sheet, findPairsCount(sheet, 3, Y + 1), Y);
 };

@@ -2,7 +2,7 @@ import fs from "fs";
 import { promisify } from "util";
 import fetch from "node-fetch";
 import { JSDOM } from "jsdom";
-import XLSX from "xlsx";
+import XLSX, { WorkBook, WorkSheet } from "xlsx";
 import md5 from "md5";
 
 import { Efrom } from "../interfaces/config";
@@ -32,13 +32,15 @@ export class File {
       throw Error("Загрузка ZIP архивов пока не реализована");
     }
 
+    this.sheet = this.book.Sheets[this.book.SheetNames[0]];
     return this;
   }
 
   name: string;
   path: string;
   from: Efrom;
-  book: any;
+  book: WorkBook;
+  sheet: WorkSheet;
   md5: string;
 }
 
