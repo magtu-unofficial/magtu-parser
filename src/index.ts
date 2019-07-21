@@ -1,9 +1,10 @@
+import Change from "./models/change";
 import { urls } from "./utils/config";
 import mongoose from "./utils/mongoose";
-import Change from "./models/change";
 import { fileList } from "./utils/files";
 import log from "./utils/log";
 import Wait from "./utils/wait";
+import findDate from "./changes/findDate";
 
 (async () => {
   log.info("Парсер запущен");
@@ -35,7 +36,18 @@ import Wait from "./utils/wait";
       continue;
     }
 
+    try {
+      const dates = findDate(file.sheet);
+    } catch (error) {
+      log.warn(`Похоже, это не замены: ${error.message}`);
+      continue;
+    }
+
     await Change.addFile(file, new Date().getTime() - fileTime.getTime());
+
+    log.info(
+      `Обработка завершена за ${new Date().getTime() - fileTime.getTime()}ms`
+    );
   }
 
   await mongoose.connection.close();
