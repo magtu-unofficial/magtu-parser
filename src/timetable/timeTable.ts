@@ -1,4 +1,4 @@
-import cp from "../lib/cellPos";
+import cp from "../utils/cellPos";
 import { WorkBook } from "xlsx/types";
 import Ipair from "../interfaces/pair";
 

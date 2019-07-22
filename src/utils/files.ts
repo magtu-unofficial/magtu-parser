@@ -19,20 +19,22 @@ export class File {
   }
 
   async load() {
-    if (this.from === Efrom.local) {
-      const buf = await readFile(this.path);
-      this.md5 = md5(buf);
-      this.book = XLSX.read(buf, { type: "buffer" });
-    } else if (this.from === Efrom.newlms) {
-      const res = await fetch(this.path);
-      const buf = await res.buffer();
-      this.md5 = md5(buf);
-      this.book = XLSX.read(buf, { type: "buffer" });
-    } else if (this.from === Efrom.newlmsZip) {
-      throw Error("Загрузка ZIP архивов пока не реализована");
-    }
+    if (!this.md5) {
+      if (this.from === Efrom.local) {
+        const buf = await readFile(this.path);
+        this.md5 = md5(buf);
+        this.book = XLSX.read(buf, { type: "buffer" });
+      } else if (this.from === Efrom.newlms) {
+        const res = await fetch(this.path);
+        const buf = await res.buffer();
+        this.md5 = md5(buf);
+        this.book = XLSX.read(buf, { type: "buffer" });
+      } else if (this.from === Efrom.newlmsZip) {
+        throw Error("Загрузка ZIP архивов пока не реализована");
+      }
 
-    this.sheet = this.book.Sheets[this.book.SheetNames[0]];
+      this.sheet = this.book.Sheets[this.book.SheetNames[0]];
+    }
     return this;
   }
 
