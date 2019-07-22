@@ -5,6 +5,7 @@ import { fileList } from "./utils/files";
 import log from "./utils/log";
 import Wait from "./utils/wait";
 import findDate from "./changes/findDate";
+import findGroup from "./changes/findGroup";
 
 (async () => {
   log.info("Парсер запущен");
@@ -37,7 +38,9 @@ import findDate from "./changes/findDate";
     }
 
     try {
+      // Ищем даты в файле замен
       const dates = findDate(file.sheet);
+      const groups = findGroup(file.sheet, dates[0].y - 1);
     } catch (error) {
       log.warn(`Похоже, это не замены: ${error.message}`);
       continue;

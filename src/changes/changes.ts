@@ -120,23 +120,6 @@ const processCol = (sheet, x, y, pairsCount: Array<number>) => {
   return { group: sheet[cp(x, y)].v.toLowerCase().split("/")[0], three };
 };
 
-const findCols = (sheet, pairsCount, y = 2) => {
-  const cols = [];
-  let empty = 0;
-  for (let col = 1; col < 300; col += 1) {
-    if (sheet[cp(col, y)]) {
-      empty = 0;
-      cols.push(processCol(sheet, col, y, pairsCount));
-    } else {
-      empty += 1;
-      if (empty > 6) {
-        return cols;
-      }
-    }
-  }
-  return cols;
-};
-
 export default (book: WorkBook) => {
   // const sheet = book.Sheets[book.SheetNames[0]];
   // return findCols(sheet, findPairsCount(sheet, 3, Y + 1), Y);
