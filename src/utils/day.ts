@@ -1,4 +1,5 @@
-const getWeek = d => {
+export const week = (d: Date) => {
+  // Copy-paste lol
   const date = new Date(d);
   date.setHours(0, 0, 0, 0);
   date.setDate(date.getDate() + 3 - ((date.getDay() + 6) % 7));
@@ -14,5 +15,17 @@ const getWeek = d => {
   );
 };
 
-export default (date: Date): number =>
-  1 + (date.getDay() < 4 ? 0 : 1) + (getWeek(date) % 2 === 1 ? 0 : 2);
+/*
+Нечетня недея
+0 - пн  3 - чт
+1 - вт  4 - пт
+2 - ср  5 - сб
+Четная неделя
+6 - пн  9 - чт
+7 - вт 10 - пт
+8 - ср 11 - сб
+*/
+
+export default (date: Date): number => {
+  return date.getDay() - 1 + (week(date) % 2 ? 0 : 1 * 6);
+};

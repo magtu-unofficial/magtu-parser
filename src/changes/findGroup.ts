@@ -1,11 +1,15 @@
 import { WorkSheet } from "xlsx";
+import Ipair from "../interfaces/pair";
 import cp from "../utils/cellPos";
+import { File } from "../utils/files";
 import { groupG } from "../utils/regexp";
 
 export interface IGroup {
   name: Array<string>;
   displayName?: string;
   x: number;
+  file?: File;
+  timetable?: Array<Ipair>;
 }
 
 export default (sheet: WorkSheet, y: number, x: number = 1): Array<IGroup> => {

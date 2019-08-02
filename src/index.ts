@@ -4,9 +4,12 @@ import mongoose from "./utils/mongoose";
 import { fileList } from "./utils/files";
 import log from "./utils/log";
 import Wait from "./utils/wait";
+import day from "./utils/day";
 import findDate from "./changes/findDate";
 import findGroup from "./changes/findGroup";
 import loadTimetables from "./timetable/loadTimetables";
+import findRows from "./timetable/findRows";
+import parseTimetable from "./timetable/parseTimetable";
 
 (async () => {
   try {
@@ -43,19 +46,50 @@ import loadTimetables from "./timetable/loadTimetables";
         // Ищем даты в файле замен
         const dates = findDate(file.sheet);
         const groups = findGroup(file.sheet, dates[0].y - 1);
-        const timetables = await loadTimetables(dates[0].date);
+        const timetablesList = await loadTimetables(dates[0].date);
 
         const timetableLoader = new Wait();
+
+        // Проходимся по всем группам и приваиваем им файлы
         for (const group of groups) {
-          if (timetables[group.name[0]]) {
-            timetableLoader.add(timetables[group.name[0]].load());
+          // Если есть нужный файл расписания, то сопоставляем группу и файл расписания
+          if (timetablesList[group.name[0]]) {
+            group.file = timetablesList[group.name[0]];
+            timetableLoader.add(timetablesList[group.name[0]].load());
           } else {
             log.warn(`Не найдено расписание для группы ${group.displayName}`);
           }
         }
+
         await timetableLoader.wait();
+
+        for (const group of groups) {
+          // Парсим расписание
+          if (group.file) {
+            try {
+              const rows = findRows(group.file.sheet);
+              for (const date of dates) {
+                try {
+                  group.timetable = parseTimetable(
+                    day(date.date),
+                    rows,
+                    group.file.sheet
+                  );
+                } catch (error) {
+                  log.error(
+                    `Ошибка обработки расписания ${group.file.name}: ${error.message}`
+                  );
+                }
+              }
+            } catch (error) {
+              log.warn(
+                `Похоже, это ${group.file.name} расписание  ${error.message}`
+              );
+            }
+          }
+        }
       } catch (error) {
-        log.warn(`Похоже, это не замены: ${error.message}`);
+        log.warn(`Похоже, ${file.name} не замены: ${error.message}`);
         continue;
       }
 
