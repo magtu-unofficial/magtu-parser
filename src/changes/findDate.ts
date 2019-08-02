@@ -1,12 +1,10 @@
 import cp from "../utils/cellPos";
 import { WorkSheet } from "xlsx";
 
-interface IPairs {
-  [index: number]: {
-    date?: Date;
-    y: number;
-    pairs?: number;
-  };
+interface Irow {
+  date?: Date;
+  y: number;
+  pairs?: number;
 }
 
 /**
@@ -15,10 +13,9 @@ interface IPairs {
  * @param y Строка, с которой начинть поиск
  * @param x Столбец с номерами пар
  */
-export default (sheet: WorkSheet, x: number = 3): IPairs => {
-  const pairs: IPairs = {};
+export default (sheet: WorkSheet, x: number = 3): Array<Irow> => {
+  const pairs: Array<Irow> = [];
   let row: number; // Номенр обрабатываемой строки
-
   // Ищем начало номеров пар
   for (let y = 1; y < 10; y += 1) {
     if (sheet[cp(2, y)]) {
