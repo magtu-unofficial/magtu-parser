@@ -1,11 +1,6 @@
 import cp from "../utils/cellPos";
 import { WorkSheet } from "xlsx";
-
-interface Irow {
-  date?: Date;
-  y: number;
-  pairs?: number;
-}
+import Irow from "../interfaces/row";
 
 /**
  * Ищет дату и количество пар в файле замен
