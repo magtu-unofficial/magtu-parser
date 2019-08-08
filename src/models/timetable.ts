@@ -1,10 +1,11 @@
-import mongoose from "../lib/mongoose";
-import addDays from "../lib/addDays";
+import mongoose from "../utils/mongoose";
 import Ipair from "../interfaces/pair";
+import Esubgroup from "../interfaces/subgroup";
 
 const timetable: mongoose.Schema = new mongoose.Schema({
   date: { type: Date, required: true },
-  group: { type: String, required: true },
+  group: [String],
+  displayName: String,
   pairs: [
     {
       number: { type: Number, required: true },
@@ -21,71 +22,52 @@ const timetable: mongoose.Schema = new mongoose.Schema({
       removed: { type: Boolean, default: false },
       error: { type: Boolean, default: false }
     }
-  ]
+  ],
+  error: { type: String }
 });
 
 timetable.index({ date: 1, group: -1 }, { unique: true });
 
-const applyChange = async (group, date, period, changes, tt) => {
-  try {
-    const day = await tt.findOne({
-      group,
-      date: addDays(date, parseInt(period, 10))
-    });
-    for (const changeKey in changes) {
-      if ({}.hasOwnProperty.call(changes, changeKey)) {
-        const change = changes[changeKey];
-        const pairIndex = day.pairs.findIndex(e => {
-          return (
-            e.number === change.number &&
-            (e.subgroup === change.subgroup ||
-              change.subgroup === "common" ||
-              e.subgroup === "common")
-          );
-        });
-        if (pairIndex !== -1) {
-          day.setPair(pairIndex, change);
-        } else {
-          day.pairs.push({ changed: true, ...change });
-        }
-      }
-    }
-
-    await day.save();
-  } catch (error) {
-    console.log(`${error.message} whren applying changes for ${group}`);
-  }
+timetable.methods.addError = function addError(error: string): void {
+  this.error = this.error ? `${this.error}\n${error}` : error;
 };
 
-timetable.methods.setPair = function setPair(index, change) {
-  // быдлокод
-  Object.assign(this.pairs[index], change);
-  this.pairs[index].changed = true;
+timetable.methods.addTimetable = function addTimetable(
+  pairs: Array<Ipair>
+): void {
+  this.pairs.push(...pairs);
 };
 
-timetable.statics.applyChanges = async function applyChages(changes, date) {
-  const tasks = [];
-  for (const item of changes) {
-    for (const period in item.three) {
-      if ({}.hasOwnProperty.call(item.three, period)) {
-        const change = item.three[period];
-        tasks.push(applyChange(item.group, date, period, change, this));
-      }
+timetable.methods.addChanges = function addChanges(pairs: Array<Ipair>): void {
+  for (const pair of pairs) {
+    const index = this.pairs.findIndex(
+      (e: Ipair) =>
+        e.number === pair.number &&
+        (e.subgroup === pair.subgroup ||
+          pair.subgroup === Esubgroup.common ||
+          e.subgroup === Esubgroup.common)
+    );
+
+    if (index !== -1) {
+      Object.assign(this.pairs[index], { changed: true, ...pair });
+    } else {
+      this.pairs.push({ changed: true, ...pair });
     }
   }
-  await Promise.all(tasks);
 };
 
 interface ItimetableDocument extends mongoose.Document {
   date: Date;
-  group: string;
+  group: Array<string>;
+  displayName: string;
   pairs: Array<Ipair>;
-  setPair: (index, change) => any;
+  error: string;
+  addError(error: string): void;
+  addTimetable(pairs: Array<Ipair>): void;
+  addChanges(pairs: Array<Ipair>): void;
 }
 
-interface ItimetableModel extends mongoose.Model<ItimetableDocument> {
-  applyChanges: (changes, date) => any;
-}
+interface ItimetableModel extends mongoose.Model<ItimetableDocument> {}
 
 const model: ItimetableModel = mongoose.model<
   ItimetableDocument,
