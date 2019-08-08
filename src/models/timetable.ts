@@ -28,15 +28,17 @@ const timetable: mongoose.Schema = new mongoose.Schema({
 
 timetable.index({ date: 1, group: -1 }, { unique: true });
 
-timetable.methods.addError = function(error: string): void {
+timetable.methods.addError = function addError(error: string): void {
   this.error = this.error ? `${this.error}\n${error}` : error;
 };
 
-timetable.methods.addTimetable = function(pairs: Array<Ipair>): void {
+timetable.methods.addTimetable = function addTimetable(
+  pairs: Array<Ipair>
+): void {
   this.pairs.push(...pairs);
 };
 
-timetable.methods.addChanges = function(pairs: Array<Ipair>): void {
+timetable.methods.addChanges = function addChanges(pairs: Array<Ipair>): void {
   for (const pair of pairs) {
     const index = this.pairs.findIndex(
       (e: Ipair) =>

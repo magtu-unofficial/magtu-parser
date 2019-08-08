@@ -16,7 +16,7 @@ describe("week", () => {
 
 describe("day", () => {
   describe("Неетная неделя", () => {
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 6; i += 1) {
       test(`День ${i}`, () => {
         expect(day(new Date(2019, 7, i + 12))).toBe(i);
       });
@@ -24,7 +24,7 @@ describe("day", () => {
   });
 
   describe("Четная неделя", () => {
-    for (let i = 0; i < 6; i++) {
+    for (let i = 0; i < 6; i += 1) {
       test(`День ${i}`, () => {
         expect(day(new Date(2019, 7, i + 19))).toBe(i + 6);
       });

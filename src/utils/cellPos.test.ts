@@ -1,4 +1,4 @@
-import cellPos from "../utils/cellPos";
+import cellPos from "./cellPos";
 
 test("Ячейка A1", () => {
   expect(cellPos(1, 1)).toBe("A1");

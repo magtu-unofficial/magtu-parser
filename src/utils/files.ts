@@ -1,8 +1,8 @@
+import XLSX, { WorkBook, WorkSheet } from "xlsx";
 import fs from "fs";
 import { promisify } from "util";
 import fetch from "node-fetch";
 import { JSDOM } from "jsdom";
-import XLSX, { WorkBook, WorkSheet } from "xlsx";
 import md5 from "md5";
 
 import { Efrom } from "../interfaces/config";
@@ -83,4 +83,5 @@ export const fileList = async (
   if (from === Efrom.newlmsZip) {
     throw Error("Загрузка ZIP архивов пока не реализована");
   }
+  return [];
 };

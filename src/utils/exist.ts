@@ -1,4 +1,4 @@
-import { WorkSheet } from "xlsx/types";
+import { WorkSheet } from "xlsx";
 import cp from "./cellPos";
 
 export default (sheet: WorkSheet, x: number, y: number) => {

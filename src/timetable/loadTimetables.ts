@@ -30,11 +30,11 @@ export const findTimtableFile = (
   const files: { [index: string]: File } = {};
 
   for (const key in groups) {
-    if (groups.hasOwnProperty(key)) {
+    if (Object.prototype.hasOwnProperty.call(groups, key)) {
       const e = groups[key];
       const name = key.toLowerCase();
 
-      files[name] = e[0];
+      [files[name]] = e;
 
       if (e.length !== 1) {
         let maxDate: Date = new Date(0);

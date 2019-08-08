@@ -12,14 +12,6 @@ export const bot = process.env.BOT;
 const configPath = path.resolve(process.argv[2] || "urls.json");
 log.info(`Конфиг: ${configPath}`);
 
-let urls: IConfig;
-
-try {
-  urls = JSON.parse(fs.readFileSync(configPath, { encoding: "utf8" }));
-} catch (error) {
-  log.error(`Ошибка парсинга конфига ${error.message}`);
-
-  process.exit(-1);
-}
-
-export { urls };
+export const urls: IConfig = JSON.parse(
+  fs.readFileSync(configPath, { encoding: "utf8" })
+);

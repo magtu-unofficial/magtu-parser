@@ -1,5 +1,5 @@
+import { WorkSheet } from "xlsx";
 import cp from "../utils/cellPos";
-import { WorkSheet } from "xlsx/types";
 import Ipair from "../interfaces/pair";
 import exist from "../utils/exist";
 import log from "../utils/log";

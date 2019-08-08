@@ -1,6 +1,7 @@
-import cp from "../utils/cellPos";
-import * as regexp from "../utils/regexp";
 import { WorkSheet } from "xlsx";
+import cp from "../utils/cellPos";
+import log from "../utils/log";
+import * as regexp from "../utils/regexp";
 import Ipair from "../interfaces/pair";
 import Esubgroup from "../interfaces/subgroup";
 import Igroup from "../interfaces/group";
@@ -18,7 +19,7 @@ const parseString = (str: string): Ipair => {
     const classroom = str.match(regexp.classroom);
     return { name, teacher, classroom: classroom ? classroom[0] : undefined };
   } catch (e) {
-    console.log("Error in changes for", str);
+    log.warn("Error in changes for", str);
     return { error: true, string: str };
   }
 };
@@ -71,7 +72,7 @@ const splitString = (str: string, num: number): Array<Ipair> => {
       ];
     }
   } catch (error) {
-    console.log(str, error.message);
+    log.warn(str, error.message);
   }
   return [];
 };
