@@ -1,4 +1,5 @@
 import Change from "./models/change";
+import Timetable from "./models/timetable";
 import { urls } from "./utils/config";
 import mongoose from "./utils/mongoose";
 import { fileList } from "./utils/files";
@@ -7,6 +8,7 @@ import Wait from "./utils/wait";
 import day from "./utils/day";
 import findDate from "./changes/findDate";
 import findGroup from "./changes/findGroup";
+import parseChanges from "./changes/parseChanges";
 import loadTimetables from "./timetable/loadTimetables";
 import findRows from "./timetable/findRows";
 import parseTimetable from "./timetable/parseTimetable";
@@ -64,27 +66,41 @@ import parseTimetable from "./timetable/parseTimetable";
         await timetableLoader.wait();
 
         for (const group of groups) {
-          // Парсим расписание
           if (group.file) {
+            let rows: { [index: number]: number } = {};
             try {
-              const rows = findRows(group.file.sheet);
-              for (const date of dates) {
-                try {
-                  group.timetable = parseTimetable(
-                    day(date.date),
-                    rows,
-                    group.file.sheet
-                  );
-                } catch (error) {
-                  log.error(
-                    `Ошибка обработки расписания ${group.file.name}: ${error.message}`
-                  );
-                }
-              }
+              rows = findRows(group.file.sheet);
             } catch (error) {
-              log.warn(
-                `Похоже, это ${group.file.name} расписание  ${error.message}`
-              );
+              log.error(error.message);
+            }
+            for (const date of dates) {
+              const timetable = new Timetable({
+                group: group.name,
+                displayName: group.displayName,
+                date: date.date
+              });
+
+              // Парсим расписание
+              try {
+                timetable.addTimetable(
+                  parseTimetable(day(date.date), rows, group.file.sheet)
+                );
+              } catch (error) {
+                const msg = `Ошибка обработки расписания ${group.file.name}: ${error.message}`;
+                log.error(msg);
+                timetable.addError(msg);
+              }
+
+              // Парсим замены
+              try {
+                timetable.addChanges(parseChanges(group, date, file.sheet));
+              } catch (error) {
+                const msg = `Ошибка обработки замен ${file.name}: ${error.message}`;
+                log.error(msg);
+                timetable.addError(msg);
+              }
+
+              await timetable.save();
             }
           }
         }
