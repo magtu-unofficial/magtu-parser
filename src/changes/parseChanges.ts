@@ -80,10 +80,10 @@ const splitString = (str: string, num: number): Array<Ipair> => {
 export default (group: Igroup, date: Irow, sheet: WorkSheet): Array<Ipair> => {
   const pairs: Array<Ipair> = [];
 
-  for (let p = 1; p <= date.pairs; p += 1) {
-    const col = date.y + p + date.pairs;
+  for (let p = 0; p < date.pairs; p += 1) {
+    const col = date.y + p;
     if (sheet[cp(group.x, col)]) {
-      pairs.push(...splitString(sheet[cp(group.x, col)].v, p));
+      pairs.push(...splitString(sheet[cp(group.x, col)].v, p + 1));
     }
   }
   return pairs;
