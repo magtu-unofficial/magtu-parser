@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist",
   "scripts": {
-    "start": "node dist --",
+    "start": "node dist",
     "dev": "ts-node src",
     "test": "eslint src/**/*.ts && jest",
     "build": "tsc"
