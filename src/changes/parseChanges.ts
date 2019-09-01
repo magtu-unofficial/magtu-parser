@@ -19,7 +19,7 @@ const parseString = (str: string): Ipair => {
     const classroom = str.match(regexp.classroom);
     return { name, teacher, classroom: classroom ? classroom[0] : undefined };
   } catch (e) {
-    log.warn("Error in changes for", str);
+    log.warn(`Ошибка в заменах для "${str}"`);
     return { error: true, string: str };
   }
 };

@@ -27,5 +27,5 @@ export const week = (d: Date) => {
 */
 
 export default (date: Date): number => {
-  return date.getDay() - 1 + (week(date) % 2 ? 0 : 1 * 6);
+  return date.getDay() - 1 + ((week(date) + 1) % 2 ? 0 : 1 * 6);
 };

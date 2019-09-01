@@ -22,14 +22,27 @@ export default (sheet: WorkSheet, x: number = 3): Array<Irow> => {
   // В файле замены максумум на три дня
   for (let three = 0; three < 3; three += 1) {
     if (sheet[cp(x - 1, row)]) {
-      const numbers = sheet[cp(x - 1, row)].v.split(".").map((val: string) => {
+      let dates;
+      // Двя разных варинатов записи дат
+      try {
+        dates = sheet[cp(x - 1, row)].v.split(".");
+      } catch (error) {
+        const tmp = sheet[cp(x - 1, row)].w.split("/");
+        dates = [tmp[1], tmp[0], tmp[2]];
+      }
+
+      const numbers = dates.map((val: string) => {
         if (isNaN(parseInt(val, 10))) {
           return null;
         }
         return parseInt(val, 10);
       });
       if (numbers.indexOf(null) === -1) {
-        const date = new Date(numbers[2], numbers[1] - 1, numbers[0]);
+        const date = new Date(
+          (numbers[2] < 2000 ? 2000 : 0) + numbers[2],
+          numbers[1] - 1,
+          numbers[0]
+        );
         pairs[three] = { date, y: row };
       }
 

@@ -16,18 +16,30 @@ describe("week", () => {
 
 describe("day", () => {
   describe("Неетная неделя", () => {
-    for (let i = 0; i < 6; i += 1) {
-      test(`День ${i}`, () => {
-        expect(day(new Date(2019, 7, i + 12))).toBe(i);
-      });
-    }
+    test("02.09.2019", () => {
+      expect(day(new Date(2019, 8, 2))).toBe(0);
+    });
+
+    test("03.09.2019", () => {
+      expect(day(new Date(2019, 8, 3))).toBe(1);
+    });
+
+    test("05.09.2019", () => {
+      expect(day(new Date(2019, 8, 5))).toBe(3);
+    });
   });
 
   describe("Четная неделя", () => {
-    for (let i = 0; i < 6; i += 1) {
-      test(`День ${i}`, () => {
-        expect(day(new Date(2019, 7, i + 19))).toBe(i + 6);
-      });
-    }
+    test("09.09.2019", () => {
+      expect(day(new Date(2019, 8, 9))).toBe(6);
+    });
+
+    test("10.09.2019", () => {
+      expect(day(new Date(2019, 8, 10))).toBe(7);
+    });
+
+    test("12.09.2019", () => {
+      expect(day(new Date(2019, 8, 12))).toBe(9);
+    });
   });
 });
