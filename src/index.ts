@@ -100,6 +100,14 @@ import parseTimetable from "./timetable/parseTimetable";
                 timetable.addError(msg);
               }
 
+              const dup = await Timetable.findOne({
+                group: group.name,
+                displayName: group.displayName,
+                date: date.date
+              });
+              if (dup) {
+                await dup.remove();
+              }
               await timetable.save();
             }
           }
