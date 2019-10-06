@@ -25,7 +25,7 @@ import parseTimetable from "./timetable/parseTimetable";
     const changesLoader = new Wait();
     changesDir.forEach(file => {
       if (file.name.search(/.xls/) !== -1) {
-        changesLoader.add(file.load());
+        changesLoader.add(() => file.load());
       }
     });
     const changesList = await changesLoader.wait();
@@ -57,7 +57,7 @@ import parseTimetable from "./timetable/parseTimetable";
           // Если есть нужный файл расписания, то сопоставляем группу и файл расписания
           if (timetablesList[group.name[0]]) {
             group.file = timetablesList[group.name[0]];
-            timetableLoader.add(timetablesList[group.name[0]].load());
+            timetableLoader.add(() => timetablesList[group.name[0]].load());
           } else {
             log.warn(`Не найдено расписание для группы ${group.displayName}`);
           }
