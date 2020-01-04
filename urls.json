@@ -2,16 +2,16 @@
   "from": "newlms",
   "timetable": {
     "urls": [
-      "https://newlms.magtu.ru/mod/folder/view.php?id=219213",
-      "https://newlms.magtu.ru/mod/folder/view.php?id=219208",
-      "https://newlms.magtu.ru/mod/folder/view.php?id=219206",
-      "https://newlms.magtu.ru/mod/folder/view.php?id=219205",
-      "https://newlms.magtu.ru/mod/folder/view.php?id=219204"
+      "https://newlms.magtu.ru/mod/folder/view.php?id=573029",
+      "https://newlms.magtu.ru/mod/folder/view.php?id=573030",
+      "https://newlms.magtu.ru/mod/folder/view.php?id=573031",
+      "https://newlms.magtu.ru/mod/folder/view.php?id=573032",
+      "https://newlms.magtu.ru/mod/folder/view.php?id=573033"
     ],
     "filenames": {}
   },
   "changes": {
-    "url": "https://newlms.magtu.ru/mod/folder/view.php?id=219250",
+    "url": "https://newlms.magtu.ru/mod/folder/view.php?id=573034",
     "ignore": []
   }
 }
