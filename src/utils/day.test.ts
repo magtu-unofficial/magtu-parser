@@ -17,29 +17,29 @@ describe("week", () => {
 describe("day", () => {
   describe("Неетная неделя", () => {
     test("02.09.2019", () => {
-      expect(day(new Date(2019, 8, 2))).toBe(0);
+      expect(day(new Date(2019, 8, 2), true)).toBe(0);
     });
 
     test("03.09.2019", () => {
-      expect(day(new Date(2019, 8, 3))).toBe(1);
+      expect(day(new Date(2019, 8, 3), true)).toBe(1);
     });
 
     test("05.09.2019", () => {
-      expect(day(new Date(2019, 8, 5))).toBe(3);
+      expect(day(new Date(2019, 8, 5), true)).toBe(3);
     });
   });
 
   describe("Четная неделя", () => {
     test("09.09.2019", () => {
-      expect(day(new Date(2019, 8, 9))).toBe(6);
+      expect(day(new Date(2019, 8, 9), true)).toBe(6);
     });
 
     test("10.09.2019", () => {
-      expect(day(new Date(2019, 8, 10))).toBe(7);
+      expect(day(new Date(2019, 8, 10), true)).toBe(7);
     });
 
     test("12.09.2019", () => {
-      expect(day(new Date(2019, 8, 12))).toBe(9);
+      expect(day(new Date(2019, 8, 12), true)).toBe(9);
     });
   });
 });

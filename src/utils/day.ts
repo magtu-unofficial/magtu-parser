@@ -26,6 +26,10 @@ export const week = (d: Date) => {
 8 - ср 11 - сб
 */
 
-export default (date: Date): number => {
-  return date.getDay() - 1 + ((week(date) + 1) % 2 ? 0 : 1 * 6);
+// TODO: Добавить invert в конфиг
+export default (date: Date, invert = false): number => {
+  if (invert) {
+    return date.getDay() - 1 + ((week(date) + 1) % 2 ? 0 : 1 * 6);
+  }
+  return date.getDay() - 1 + (week(date) % 2 ? 0 : 1 * 6);
 };
