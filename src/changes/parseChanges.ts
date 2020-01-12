@@ -27,7 +27,7 @@ const parseString = (str: string): Ipair => {
 const splitString = (str: string, num: number): Array<Ipair> => {
   try {
     // Общая пара
-    if (str.search(/1. /) === -1 && str.search(/2. /) === -1) {
+    if (str.search(/^1. /) === -1 && str.search(/2. /) === -1) {
       return [
         {
           number: num,
@@ -37,7 +37,7 @@ const splitString = (str: string, num: number): Array<Ipair> => {
       ];
     }
     // Пара у двух подгрупп
-    if (str.search(/1. /) !== -1 && str.search(/2. /) !== -1) {
+    if (str.search(/^1. /) !== -1 && str.search(/2. /) !== -1) {
       return [
         {
           number: num,
@@ -52,7 +52,7 @@ const splitString = (str: string, num: number): Array<Ipair> => {
       ];
     }
     // Пара у первой подгруппы
-    if (str.search(/1. /) !== -1) {
+    if (str.search(/^1. /) !== -1) {
       return [
         {
           number: num,
