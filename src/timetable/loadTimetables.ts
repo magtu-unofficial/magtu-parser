@@ -51,10 +51,13 @@ export const findTimtableFile = (
             }
           }
         }
+
         if (!maxFile) {
+          let maxLength = 0;
           for (const file of e) {
-            if (file.name.search(date) === -1) {
+            if (file.name.length > maxLength) {
               maxFile = file;
+              maxLength = file.name.length;
             }
           }
         }
