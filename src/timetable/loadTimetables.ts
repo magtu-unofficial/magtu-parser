@@ -34,11 +34,11 @@ export const findTimtableFile = (
       const e = groups[key];
       const name = key.toLowerCase();
 
-      [files[name]] = e;
-
       if (e.length !== 1) {
         let maxDate: Date = new Date(0);
         let maxFile: File;
+
+        // Ищем файл с максимальной датой, но не новее, чем сегодня
         for (const file of e) {
           if (file.name.search(date) !== -1) {
             const newDate = parseDate(file.name);
@@ -52,16 +52,20 @@ export const findTimtableFile = (
           }
         }
 
+        // Если файл с датой не найден то ищем файл с самым длинным названием, не содержашем дату
         if (!maxFile) {
           let maxLength = 0;
           for (const file of e) {
-            if (file.name.length > maxLength) {
+            if (file.name.search(date) === -1 && file.name.length > maxLength) {
               maxFile = file;
               maxLength = file.name.length;
             }
           }
         }
         files[name] = maxFile;
+      } else {
+        // eslint-disable-next-line
+        files[name] = e[0];
       }
     }
   }
