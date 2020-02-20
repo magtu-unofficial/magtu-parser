@@ -7,7 +7,7 @@ import Esubgroup from "../interfaces/subgroup";
 import Igroup from "../interfaces/group";
 import Irow from "../interfaces/row";
 
-const parseString = (str: string): Ipair => {
+export const parseString = (str: string): Ipair => {
   try {
     if (str.search(/-{2,}/) !== -1) {
       return {
@@ -24,10 +24,10 @@ const parseString = (str: string): Ipair => {
   }
 };
 
-const splitString = (str: string, num: number): Array<Ipair> => {
+export const splitString = (str: string, num: number): Array<Ipair> => {
   try {
     // Общая пара
-    if (str.search(/^1. /) === -1 && str.search(/2. /) === -1) {
+    if (str.search(/^1\. /) === -1 && str.search(/2\. /) === -1) {
       return [
         {
           number: num,
@@ -37,7 +37,7 @@ const splitString = (str: string, num: number): Array<Ipair> => {
       ];
     }
     // Пара у двух подгрупп
-    if (str.search(/^1. /) !== -1 && str.search(/2. /) !== -1) {
+    if (str.search(/^1\. /) !== -1 && str.search(/2\. /) !== -1) {
       return [
         {
           number: num,
@@ -52,7 +52,7 @@ const splitString = (str: string, num: number): Array<Ipair> => {
       ];
     }
     // Пара у первой подгруппы
-    if (str.search(/^1. /) !== -1) {
+    if (str.search(/^1\. /) !== -1) {
       return [
         {
           number: num,
@@ -62,7 +62,7 @@ const splitString = (str: string, num: number): Array<Ipair> => {
       ];
     }
     // Пара у второй подгруппы
-    if (str.search(/2. /) !== -1) {
+    if (str.search(/2\. /) !== -1) {
       return [
         {
           number: num,
