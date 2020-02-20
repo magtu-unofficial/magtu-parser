@@ -1,6 +1,8 @@
+import fetch from "node-fetch";
+
 import Change from "./models/change";
 import Timetable from "./models/timetable";
-import { urls } from "./utils/config";
+import { urls, bot } from "./utils/config";
 import mongoose from "./utils/mongoose";
 import { fileList } from "./utils/files";
 import log from "./utils/log";
@@ -122,6 +124,12 @@ import parseTimetable from "./timetable/parseTimetable";
       log.info(
         `Обработка завершена за ${new Date().getTime() - fileTime.getTime()}ms`
       );
+
+      try {
+        await fetch(bot);
+      } catch (error) {
+        log.warn("Не удалось оповестить бота");
+      }
     }
 
     await mongoose.connection.close();
