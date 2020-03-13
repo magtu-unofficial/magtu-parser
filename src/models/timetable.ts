@@ -38,6 +38,14 @@ timetable.methods.addTimetable = function addTimetable(
   this.pairs.push(...pairs);
 };
 
+const rmElement = <T>(arr: Array<T>, comp: (e: T) => boolean): Array<T> => {
+  const rmId = arr.findIndex(comp);
+  if (rmId !== -1) {
+    return arr.splice(rmId, 1);
+  }
+  return [];
+};
+
 timetable.methods.addChanges = function addChanges(pairs: Array<Ipair>): void {
   for (const pair of pairs) {
     const index = this.pairs.findIndex(
@@ -50,9 +58,24 @@ timetable.methods.addChanges = function addChanges(pairs: Array<Ipair>): void {
 
     if (index !== -1) {
       Object.assign(this.pairs[index], { changed: true, ...pair });
+
+      if (pair.subgroup === Esubgroup.common) {
+        rmElement(
+          this.pairs,
+          (e: Ipair) =>
+            e.number === pair.number && e.subgroup === Esubgroup.first
+        );
+
+        rmElement(
+          this.pairs,
+          (e: Ipair) =>
+            e.number === pair.number && e.subgroup === Esubgroup.second
+        );
+      }
     } else {
       this.pairs.push({ changed: true, ...pair });
     }
+    // if (this.displayName === "О-17-2") console.log(this.pairs);
   }
 };
 
