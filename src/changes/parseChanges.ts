@@ -15,9 +15,13 @@ export const parseString = (str: string): Ipair => {
       };
     }
     const name = str.split(/\s\s|\n/)[0];
-    const teacher = str.match(regexp.teacher)[0];
+    const teacher = str.match(regexp.teacher);
     const classroom = str.match(regexp.classroom);
-    return { name, teacher, classroom: classroom ? classroom[0] : undefined };
+    return {
+      name,
+      teacher: teacher ? teacher[0] : undefined,
+      classroom: classroom ? classroom[0] : undefined
+    };
   } catch (e) {
     log.warn(`Ошибка в заменах для "${str}"`);
     return { error: true, string: str };
