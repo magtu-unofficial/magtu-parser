@@ -126,9 +126,10 @@ import parseTimetable from "./timetable/parseTimetable";
       );
 
       try {
-        await fetch(bot);
+        const res = await fetch(bot);
+        log.info(await res.text());
       } catch (error) {
-        log.warn("Не удалось оповестить бота");
+        log.warn(`Не удалось оповестить бота ${error.message}`);
       }
     }
 
