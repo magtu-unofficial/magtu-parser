@@ -8,6 +8,7 @@ export { Efrom };
 
 export default interface IConfig {
   from: Efrom;
+  invert: boolean;
   timetable: {
     urls: Array<string>;
     filenames: {
