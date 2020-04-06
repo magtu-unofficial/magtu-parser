@@ -1,3 +1,5 @@
+import { urls } from "./config";
+
 export const week = (d: Date) => {
   // Copy-paste lol
   const date = new Date(d);
@@ -26,8 +28,7 @@ export const week = (d: Date) => {
 8 - ср 11 - сб
 */
 
-// TODO: Добавить invert в конфиг
-export default (date: Date, invert = false): number => {
+export default (date: Date, invert = urls.invert): number => {
   if (invert) {
     return date.getDay() - 1 + ((week(date) + 1) % 2 ? 0 : 1 * 6);
   }
