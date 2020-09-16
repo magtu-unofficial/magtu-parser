@@ -61,16 +61,7 @@ const readBlock = (sheet: WorkSheet, x: number, y: number): Array<Ipair> => {
           });
         }
       }
-      for (let i = 0; i < 1; i += 1) {
-        if (
-          block[i] &&
-          block[i].teacher &&
-          block[i].teacher.indexOf(".") === -1
-        ) {
-          throw Error(block[i].teacher);
-        }
-      }
-
+      // TODO: Приводить строки в нормалоьный вид
       return block;
     }
     return [];

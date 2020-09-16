@@ -9,6 +9,10 @@
     "test": "eslint src/**/*.ts && jest",
     "build": "tsc"
   },
+  "prettier": {
+    "trailingComma": "none",
+    "arrowParens": "avoid"
+  },
   "keywords": [],
   "author": "",
   "license": "GPL-3.0",
