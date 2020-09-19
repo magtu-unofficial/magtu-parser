@@ -14,7 +14,14 @@ export const parseString = (str: string): Ipair => {
         removed: true
       };
     }
-    const name = str.split(/\s\s|\n/)[0];
+    const nameList = str.split(/\s\s|\n/);
+    let name: string;
+    for (const el of nameList) {
+      if (el.length > 1) {
+        name = el;
+        break;
+      }
+    }
     const teacher = str.match(regexp.teacher);
     const classroom = str.match(regexp.classroom);
     return {
