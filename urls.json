@@ -1,17 +1,17 @@
 {
   "from": "newlms",
-  "invert": true,
+  "invert": false,
   "timetable": {
     "urls": [
-      "https://newlms.magtu.ru/mod/folder/view.php?id=219213",
-      "https://newlms.magtu.ru/mod/folder/view.php?id=219208",
-      "https://newlms.magtu.ru/mod/folder/view.php?id=219206",
-      "https://newlms.magtu.ru/mod/folder/view.php?id=219205"
+      "https://newlms.magtu.ru/mod/folder/view.php?id=983605",
+      "https://newlms.magtu.ru/mod/folder/view.php?id=983612",
+      "https://newlms.magtu.ru/mod/folder/view.php?id=983613",
+      "https://newlms.magtu.ru/mod/folder/view.php?id=983614"
     ],
     "filenames": {}
   },
   "changes": {
-    "url": "https://newlms.magtu.ru/mod/folder/view.php?id=219250",
+    "url": "https://newlms.magtu.ru/mod/folder/view.php?id=573034",
     "ignore": []
   }
 }
