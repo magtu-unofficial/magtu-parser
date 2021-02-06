@@ -67,8 +67,18 @@ import parseTimetable from "./timetable/parseTimetable";
 
         await timetableLoader.wait();
 
+        const groupNames: Array<string> = [];
+
         for (const group of groups) {
           if (group.file) {
+            group.name.forEach(name => {
+              if (groupNames.findIndex(v => v === name) !== -1) {
+                group.name.pop();
+              }
+            });
+
+            groupNames.push(...group.name);
+
             let rows: { [index: number]: number } = {};
             try {
               rows = findRows(group.file.sheet);
