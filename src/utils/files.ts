@@ -33,7 +33,14 @@ export class File {
         throw Error("Загрузка ZIP архивов пока не реализована");
       }
 
-      this.sheet = this.book.Sheets[this.book.SheetNames[0]];
+      for (const sheetName in this.book.Sheets) {
+        if (Object.prototype.hasOwnProperty.call(this.book.Sheets, sheetName)) {
+          const sheet = this.book.Sheets[sheetName];
+          if (sheet["!ref"]) {
+            this.sheet = sheet;
+          }
+        }
+      }
     }
     return this;
   }
