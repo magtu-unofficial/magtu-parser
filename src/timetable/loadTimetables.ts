@@ -11,11 +11,13 @@ export const loadTimetable = async (): Promise<{
   for (const path of urls.timetable.urls) {
     const currentFiles = await fileList(path);
     currentFiles.forEach(val => {
-      const group = val.name.match(groupG)[0];
-      if (!groups[group]) {
-        groups[group] = [];
+      const group = val.name.match(groupG);
+      if (group) {
+        if (!groups[group[0]]) {
+          groups[group[0]] = [];
+        }
+        groups[group[0]].push(val);
       }
-      groups[group].push(val);
     });
   }
   return groups;
