@@ -32,7 +32,7 @@ import parseTimetable from "./timetable/parseTimetable";
     });
     const changesList = await changesLoader.wait();
     log.info(
-      `В директорие замен колличество файлов: ${changesDir.length}, из них .xls(x): ${changesList.length}`
+      `В директории замен колличество файлов: ${changesDir.length}, из них .xls(x): ${changesList.length}`
     );
 
     // Обрабатываем каждый файл замен
