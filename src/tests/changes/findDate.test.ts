@@ -1,5 +1,5 @@
 import loadTestFile from "../loadTestFile";
-import findDate from "./findDate";
+import findDate from "../../changes/findDate";
 
 test("Нормальный файл", () => {
   expect(findDate(loadTestFile("changes/normal.xls"))).toEqual([

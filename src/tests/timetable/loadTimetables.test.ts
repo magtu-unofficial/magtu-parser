@@ -1,6 +1,6 @@
-import { findTimtableFile } from "./loadTimetables";
-import { Efrom } from "../interfaces/config";
-import { File } from "../utils/files";
+import { findTimtableFile } from "../../timetable/loadTimetables";
+import { Efrom } from "../../interfaces/config";
+import { File } from "../../utils/files";
 
 const testData = {
   "Испк-18-1": [

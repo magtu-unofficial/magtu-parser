@@ -18,12 +18,9 @@ import parseTimetable from "./timetable/parseTimetable";
 (async () => {
   try {
     log.info("Парсер запущен");
-    // Засекаем время работы
     const startTime = new Date();
 
-    // Получаем список файлов в директорие замен
     const changesDir = await fileList(urls.changes.url);
-    // Загружаем .xls или .xlsx файлы
     const changesLoader = new Wait();
     changesDir.forEach(file => {
       if (file.name.search(/.xls/) !== -1) {
@@ -35,28 +32,23 @@ import parseTimetable from "./timetable/parseTimetable";
       `В директории замен колличество файлов: ${changesDir.length}, из них .xls(x): ${changesList.length}`
     );
 
-    // Обрабатываем каждый файл замен
     for (const file of changesList) {
       const fileTime = new Date();
       log.info(`Обработка ${file.name}`);
 
-      // Проверяем, был ли этот файл уже распарсен
       if (await Change.hasFile(file.md5)) {
         log.info("Файл уже был обработан");
         continue;
       }
 
       try {
-        // Ищем даты в файле замен
         const dates = findDate(file.sheet);
         const groups = findGroup(file.sheet, dates[0].y - 1);
         const timetablesList = await loadTimetables(dates[0].date);
 
         const timetableLoader = new Wait();
 
-        // Проходимся по всем группам и приваиваем им файлы
         for (const group of groups) {
-          // Если есть нужный файл расписания, то сопоставляем группу и файл расписания
           if (timetablesList[group.name[0]]) {
             group.file = timetablesList[group.name[0]];
             timetableLoader.add(() => timetablesList[group.name[0]].load());
@@ -92,7 +84,6 @@ import parseTimetable from "./timetable/parseTimetable";
                 date: date.date
               });
 
-              // Парсим расписание
               try {
                 timetable.addTimetable(
                   parseTimetable(day(date.date), rows, group.file.sheet)
@@ -103,7 +94,6 @@ import parseTimetable from "./timetable/parseTimetable";
                 timetable.addError(msg);
               }
 
-              // Парсим замены
               try {
                 timetable.addChanges(parseChanges(group, date, file.sheet));
               } catch (error) {

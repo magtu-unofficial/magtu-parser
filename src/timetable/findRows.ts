@@ -9,10 +9,23 @@ const findRow = (
   x = 1,
   limit = 100
 ) => {
-  // const end = false;
-
   for (let y = startFrom; y < limit; y += 1) {
-    if (exist(sheet, x, y) && sheet[cp(x, y)].v === text) {
+    if (exist(sheet, x, y) && sheet[cp(x, y)].h === text) {
+      return y;
+    }
+  }
+  return -1;
+};
+
+const findRowFirstGrade = (
+  sheet: WorkSheet,
+  reg: RegExp,
+  startFrom = 10,
+  x = 1,
+  limit = 130
+) => {
+  for (let y = startFrom; y < limit; y += 1) {
+    if (exist(sheet, x, y) && reg.test(sheet[cp(x, y)].h)) {
       return y;
     }
   }
@@ -20,18 +33,42 @@ const findRow = (
 };
 
 export default (sheet: WorkSheet): { [index: number]: number } => {
-  // Находим координаты каждой из 4х строк
-  // (понедельник нечетный, четверг нечетный, понедельник четный, четверг нечетный)
-
   const rows: { [index: number]: number } = {};
-  for (let row = 1; row <= 4; row += 1) {
-    rows[row] = findRow(
-      sheet,
-      row % 2 === 1 ? "Понедельник" : "Четверг",
-      rows[row - 1 !== undefined ? row - 1 : 1]
-    );
+  const upscaling = 10;
+  let isFirstGrade = false;
 
-    if (rows[row] === -1) throw Error(`Строка ${row} не найдена`);
+  for (let row = 1; row <= 4; row += 1) {
+    let rw: number = null;
+
+    if (!isFirstGrade) {
+      rw = findRow(
+        sheet,
+        row % 2 === 1 ? "Понедельник" : "Четверг",
+        rows[row - 1 !== undefined ? row - 1 : 1]
+      );
+
+      if (rw === -1) {
+        isFirstGrade = true;
+      }
+
+      if (!isFirstGrade) {
+        rows[row] = rw;
+      }
+    }
+
+    if (isFirstGrade) {
+      rw = findRowFirstGrade(
+        sheet,
+        (upscaling + row) % 2 === 1
+          ? /^Понедельник \d{2}.\d{2}$/
+          : /^Четверг \d{2}.\d{2}$/,
+        rows[row - 1 !== undefined ? row - 1 : 1]
+      );
+
+      if (rw === -1) throw Error(`Строка ${row} не найдена`);
+
+      rows[row] = rw;
+    }
   }
 
   return rows;

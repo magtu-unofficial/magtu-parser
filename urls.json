@@ -3,15 +3,15 @@
   "invert": false,
   "timetable": {
     "urls": [
-      "https://newlms.magtu.ru/mod/folder/view.php?id=983605",
-      "https://newlms.magtu.ru/mod/folder/view.php?id=983612",
-      "https://newlms.magtu.ru/mod/folder/view.php?id=983613",
-      "https://newlms.magtu.ru/mod/folder/view.php?id=983614"
+      "https://newlms.magtu.ru/mod/folder/view.php?id=1223698",
+      "https://newlms.magtu.ru/mod/folder/view.php?id=1223699",
+      "https://newlms.magtu.ru/mod/folder/view.php?id=1223700",
+      "https://newlms.magtu.ru/mod/folder/view.php?id=1223701"
     ],
     "filenames": {}
   },
   "changes": {
-    "url": "https://newlms.magtu.ru/mod/folder/view.php?id=573034",
+    "url": "https://newlms.magtu.ru/mod/folder/view.php?id=1223702",
     "ignore": []
   }
 }

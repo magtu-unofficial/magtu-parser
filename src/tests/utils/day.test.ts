@@ -1,4 +1,4 @@
-import day, { week } from "./day";
+import day, { week } from "../../utils/day";
 
 describe("week", () => {
   test("01.01.2019", () => {

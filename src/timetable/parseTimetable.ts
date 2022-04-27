@@ -7,17 +7,17 @@ import Esubgroup from "../interfaces/subgroup";
 
 const readSubgroup = (sheet: WorkSheet, x: number, y: number) => {
   return {
-    name: sheet[cp(x, y)].v,
-    teacher: sheet[cp(x, y + 1)].v,
-    classroom: sheet[cp(x + 1, y + 1)] ? sheet[cp(x + 1, y + 1)].v : -1
+    name: sheet[cp(x, y)].h,
+    teacher: sheet[cp(x, y + 1)].h,
+    classroom: sheet[cp(x + 1, y + 1)] ? sheet[cp(x + 1, y + 1)].h : -1
   };
 };
 
 const readGroup = (sheet: WorkSheet, x: number, y: number) => {
   return {
-    name: sheet[cp(x, y)].v,
-    teacher: sheet[cp(x, y + 1)].v,
-    classroom: sheet[cp(x + 3, y + 1)] ? sheet[cp(x + 3, y + 1)].v : -1
+    name: sheet[cp(x, y)].h,
+    teacher: sheet[cp(x, y + 1)].h,
+    classroom: sheet[cp(x + 3, y + 1)] ? sheet[cp(x + 3, y + 1)].h : -1
   };
 };
 
@@ -101,6 +101,6 @@ export default (
     sheet,
     6 * three + 1,
     rows[row] + 1,
-    rows[row + 1] !== undefined ? rows[row + 1] : 100
+    rows[row + 1] !== undefined ? rows[row + 1] : 130
   );
 };
