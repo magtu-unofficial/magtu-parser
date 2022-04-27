@@ -1,5 +1,5 @@
 import loadTestFile from "../loadTestFile";
-import findGroup from "./findGroup";
+import findGroup from "../../changes/findGroup";
 
 test("Нормальный файл", () => {
   expect(findGroup(loadTestFile("changes/normal.xls"), 2).slice(0, 10)).toEqual(

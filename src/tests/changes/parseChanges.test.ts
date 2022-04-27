@@ -1,4 +1,4 @@
-import { splitString } from "./parseChanges";
+import { splitString } from "../../changes/parseChanges";
 
 test("Общая пара", () => {
   expect(splitString("Инф. Техн (ТО)", 2)).toMatchObject([

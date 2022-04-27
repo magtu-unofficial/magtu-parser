@@ -1,6 +1,9 @@
-./idea
+.idea/
 node_modules
 dist
 .env
 test
 coverage
+*.json
+*.xlsx
+.env
