@@ -1,5 +1,5 @@
 import loadTestFile from "../loadTestFile";
-import findRows from "./findRows";
+import findRows from "../../timetable/findRows";
 
 test("Нормальное расписание", () => {
   expect(findRows(loadTestFile("timetable/1.xlsx"))).toEqual({

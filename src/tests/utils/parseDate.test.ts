@@ -1,4 +1,4 @@
-import parseDate from "./parseDate";
+import parseDate from "../../utils/parseDate";
 
 test("Дата 28.01.19", () => {
   expect(parseDate("28.01.19")).toEqual(new Date(2019, 0, 28));

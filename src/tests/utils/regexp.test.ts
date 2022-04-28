@@ -1,4 +1,4 @@
-import { groupG, date } from "./regexp";
+import { groupG, date } from "../../utils/regexp";
 
 test("Группа Испк-18-1", () => {
   expect("Испк-18-1".match(groupG)[0]).toBe("Испк-18-1");
