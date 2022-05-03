@@ -32,6 +32,7 @@ import parseTimetable from "./timetable/parseTimetable";
       `В директории замен колличество файлов: ${changesDir.length}, из них .xls(x): ${changesList.length}`
     );
 
+    let isNewTimetableApplied = false;
     for (const file of changesList) {
       const fileTime = new Date();
       log.info(`Обработка ${file.name}`);
@@ -114,6 +115,7 @@ import parseTimetable from "./timetable/parseTimetable";
             }
           }
         }
+        isNewTimetableApplied = true;
       } catch (error) {
         log.warn(`Похоже, ${file.name} не замены: ${error.message}`);
         continue;
@@ -124,7 +126,9 @@ import parseTimetable from "./timetable/parseTimetable";
       log.info(
         `Обработка завершена за ${new Date().getTime() - fileTime.getTime()}ms`
       );
+    }
 
+    if (isNewTimetableApplied) {
       try {
         const res = await fetch(bot);
         log.info(await res.text());
