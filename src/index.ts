@@ -44,7 +44,18 @@ import parseTimetable from "./timetable/parseTimetable";
 
       try {
         const dates = findDate(file.sheet);
-        const groups = findGroup(file.sheet, dates[0].y - 1);
+
+        let groups = null;
+
+        for (let y = dates[0].y - 1; y >= 1; y -= 1) {
+          try {
+            groups = findGroup(file.sheet, y);
+            break;
+          } catch (error) {
+            log.info(`На ${y} строке груп не найдено. Пробуем выше`);
+          }
+        }
+
         const timetablesList = await loadTimetables(dates[0].date);
 
         const timetableLoader = new Wait();
