@@ -63,7 +63,10 @@ import parseTimetable from "./timetable/parseTimetable";
         for (const group of groups) {
           if (timetablesList[group.name[0]]) {
             group.file = timetablesList[group.name[0]];
-            timetableLoader.add(() => timetablesList[group.name[0]].load());
+            timetableLoader.add(() => {
+              console.debug(group.name[0]);
+              return timetablesList[group.name[0]].load();
+            });
           } else {
             log.warn(`Не найдено расписание для группы ${group.displayName}`);
           }

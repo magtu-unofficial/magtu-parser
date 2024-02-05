@@ -3,7 +3,7 @@ FROM node:11-alpine
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 
 COPY . .
 RUN npm run build && \
@@ -11,4 +11,4 @@ RUN npm run build && \
   ln -sf /proc/1/fd/1 /var/log/cron.log && \
   /usr/bin/crontab /app/cron/crontab
 
-CMD ["cron/entry.sh"]
+CMD ["cron/entry.sh"] 
