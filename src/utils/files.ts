@@ -79,7 +79,7 @@ export const fileList = async (
     elements.forEach(value => {
       files.push(
         new File(
-          value.lastElementChild.innerHTML,
+          value.innerHTML,
           value.getAttribute("href"),
           urls.from
         )
