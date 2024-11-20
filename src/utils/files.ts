@@ -25,7 +25,31 @@ export class File {
         this.md5 = md5(buf);
         this.book = XLSX.read(buf, { type: "buffer" });
       } else if (this.from === Efrom.newlms) {
-        const res = await fetch(this.path);
+        const res = await fetch(this.path, {
+          headers: {
+            accept:
+              "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+            "accept-language": "en-US,en;q=0.9,ru;q=0.8",
+            "cache-control": "no-cache",
+            pragma: "no-cache",
+            "sec-ch-ua":
+              '"Google Chrome";v="131", "Chromium";v="131", "Not_A Brand";v="24"',
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": '"Windows"',
+            "sec-fetch-dest": "document",
+            "sec-fetch-mode": "navigate",
+            "sec-fetch-site": "same-origin",
+            "sec-fetch-user": "?1",
+            "upgrade-insecure-requests": "1",
+            cookie:
+              "BPC=af13c4e4925aeb3594d3fc55908de263; MoodleSession=d7emmp5bioeujndcjuj738ho0q",
+            Referer: "https://newlms.magtu.ru/course/view.php?id=26619",
+            "Referrer-Policy": "strict-origin-when-cross-origin"
+          },
+          body: null,
+          method: "GET"
+        });
+
         const buf = await res.buffer();
         this.md5 = md5(buf);
         this.book = XLSX.read(buf, { type: "buffer" });
